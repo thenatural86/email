@@ -21,4 +21,13 @@ document.addEventListener('DOMContentLoaded', () => {
             load_mailbox('sent')
         });
     })
+
+    // console.log(mailbox)
+
+    // function show_mailbox(){
+    //     console.log('here i am')
+    //   }
+    // if(load_mailbox == 'sent'){
+    //     show_mailbox()
+    // }
 })
