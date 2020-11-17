@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const form = document.querySelector('#compose-form');
     
+    const form = document.querySelector('#compose-form');
     form.addEventListener('submit', e => {
         e.preventDefault();
         const recipients = document.querySelector('#compose-recipients').value;
@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(response => response.json())
         .then(result => {
             console.log(result);
+            load_mailbox('sent')
         });
     })
 })
