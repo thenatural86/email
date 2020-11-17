@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('hello')
     const form = document.querySelector('#compose-form');
     
     form.addEventListener('submit', e => {
@@ -18,7 +17,6 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .then(response => response.json())
         .then(result => {
-            // Print result
             console.log(result);
         });
     })
