@@ -18,6 +18,7 @@ function compose_email() {
   // Show compose view and hide other views
   document.querySelector('#emails-view').style.display = 'none';
   document.querySelector('#compose-view').style.display = 'block';
+  document.querySelector('#email-view').style.display = 'none';
 
   // Clear out composition fields
   document.querySelector('#compose-recipients').value = '';
@@ -30,6 +31,8 @@ function load_mailbox(mailbox) {
   // Show the mailbox and hide other views
   document.querySelector('#emails-view').style.display = 'block';
   document.querySelector('#compose-view').style.display = 'none';
+  document.querySelector('#email-view').style.display = 'none';
+
   // console.log(mailbox)
 
   // Show the mailbox name
@@ -44,7 +47,10 @@ function load_mailbox(mailbox) {
 }
 
 const render_emails = (email) => {
-  const mail = document.createElement('div');
+  document.querySelector('#email-view').style.display = 'none';
+  document.querySelector('#compose-view').style.display = 'none';
+
+      const mail = document.createElement('div');
       const sender = document.createElement('h5');
       const subject = document.createElement('p');
       const time = document.createElement('p');
@@ -73,15 +79,66 @@ const render_emails = (email) => {
       mail.appendChild(sender);
       mail.appendChild(subject);
       mail.append(time);
-      mail.addEventListener('click', () => load_email()) 
+      mail.addEventListener('click', () => load_email(email.id)) 
 }
 
-const load_email = () => {
-  console.log('yolo')
 
+
+
+const load_email = (id) => {
   document.querySelector('#emails-view').style.display = 'none';
-  // fetch(`/emails/${id}`)
+  document.querySelector('#compose-view').style.display = 'none';
+  document.querySelector('#email-view').style.display = 'none';
+
+  fetch(`/emails/${id}`)
+  .then(response => response.json())
+  .then(data => {
+    render_email(data)
+  })
 }
+
+
+
+
+
+const render_email = (email) => {
+    console.log('time to render this email', email);
+    document.querySelector('#emails-view').style.display = 'none';
+    document.querySelector('#compose-view').style.display = 'none';
+    document.querySelector('#email-view').style.display = 'block';
+
+    const mail = document.createElement('div');
+    const sender = document.createElement('h5');
+    const subject = document.createElement('p');
+    const body = document.createElement('p');
+    const time = document.createElement('p');
+    const id = document.createElement('p');
+    
+    id.innerHTML = email.id;
+    sender.innerHTML = email.sender;
+    body.innerHTML = email.body;
+    subject.innerHTML = email.sender;
+    time.innerHTML = email.time;
+  
+  
+    mail.style.display = 'block';
+    mail.style.borderStyle = 'solid';
+    mail.style.borderColor = 'black';
+    mail.style.borderWidth = '2px';
+    mail.style.borderRadius = '5px';
+
+    const email_view = document.querySelector('#email-view');
+
+    email_view.appendChild(mail);
+    mail.appendChild(body);
+  }
+
+
+ 
+
+
+  
+
 
 
 function send_mail(){
