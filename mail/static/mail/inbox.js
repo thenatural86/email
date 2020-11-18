@@ -33,8 +33,6 @@ function load_mailbox(mailbox) {
   document.querySelector('#compose-view').style.display = 'none';
   document.querySelector('#email-view').style.display = 'none';
 
-  // console.log(mailbox)
-
   // Show the mailbox name
   document.querySelector('#emails-view').innerHTML = `<h3>${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}</h3>`;
 
@@ -49,41 +47,37 @@ function load_mailbox(mailbox) {
 const render_emails = (email) => {
   document.querySelector('#email-view').style.display = 'none';
   document.querySelector('#compose-view').style.display = 'none';
+  const mail = document.createElement('div');
+  const sender = document.createElement('h5');
+  const subject = document.createElement('p');
+  const time = document.createElement('p');
+  const id = document.createElement('p');
 
-      const mail = document.createElement('div');
-      const sender = document.createElement('h5');
-      const subject = document.createElement('p');
-      const time = document.createElement('p');
-      const id = document.createElement('p');
+  id.innerHTML = email.id;
+  sender.innerHTML = `From: ${email.sender}`;
+  subject.innerHTML = `Subject: ${email.subject}`;
+  time.innerHTML = email.timestamp;
 
-      id.innerHTML = email.id;
-      sender.innerHTML = `From: ${email.sender}`;
-      subject.innerHTML = `Subject: ${email.subject}`;
-      time.innerHTML = email.timestamp;
+  mail.style.borderStyle = 'solid';
+  mail.style.borderColor = 'black';
+  mail.style.borderWidth = '2px';
+  mail.style.borderRadius = '5px';
+  mail.style.margin = '2rem';
+  if(email.read === true){
+    mail.style.backgroundColor = 'red'
+  }
 
-      mail.style.borderStyle = 'solid';
-      mail.style.borderColor = 'black';
-      mail.style.borderWidth = '2px';
-      mail.style.borderRadius = '5px';
-      mail.style.margin = '2rem';
-      if(email.read === true){
-        mail.style.backgroundColor = 'red'
-      }
+  mail.classList.add('container');
+  mail.classList.add('mail');
 
-      mail.classList.add('container');
-      mail.classList.add('mail');
+  const email_view = document.querySelector('#emails-view');
 
-      const email_view = document.querySelector('#emails-view');
-
-      email_view.appendChild(mail);
-      mail.appendChild(sender);
-      mail.appendChild(subject);
-      mail.append(time);
-      mail.addEventListener('click', () => load_email(email.id)) 
+  email_view.appendChild(mail);
+  mail.appendChild(sender);
+  mail.appendChild(subject);
+  mail.append(time);
+  mail.addEventListener('click', () => load_email(email.id)) 
 }
-
-
-
 
 const load_email = (id) => {
   document.querySelector('#emails-view').style.display = 'none';
@@ -97,49 +91,40 @@ const load_email = (id) => {
   })
 }
 
-
-
-
-
 const render_email = (email) => {
-    console.log('time to render this email', email);
-    document.querySelector('#emails-view').style.display = 'none';
-    document.querySelector('#compose-view').style.display = 'none';
-    document.querySelector('#email-view').style.display = 'block';
+  console.log('time to render this email', email);
+  document.querySelector('#emails-view').style.display = 'none';
+  document.querySelector('#compose-view').style.display = 'none';
+  document.querySelector('#email-view').style.display = 'block';
 
-    const mail = document.createElement('div');
-    const sender = document.createElement('h5');
-    const subject = document.createElement('p');
-    const body = document.createElement('p');
-    const time = document.createElement('p');
-    const id = document.createElement('p');
-    
-    id.innerHTML = email.id;
-    sender.innerHTML = email.sender;
-    body.innerHTML = email.body;
-    subject.innerHTML = email.sender;
-    time.innerHTML = email.time;
+  const mail = document.createElement('div');
+  const sender = document.createElement('h5');
+  const subject = document.createElement('p');
+  const body = document.createElement('p');
+  const time = document.createElement('p');
+  const id = document.createElement('p');
   
-  
-    mail.style.display = 'block';
-    mail.style.borderStyle = 'solid';
-    mail.style.borderColor = 'black';
-    mail.style.borderWidth = '2px';
-    mail.style.borderRadius = '5px';
-
-    const email_view = document.querySelector('#email-view');
-
-    email_view.appendChild(mail);
-    mail.appendChild(body);
-  }
+  id.innerHTML = email.id;
+  sender.innerHTML = email.sender;
+  body.innerHTML = email.body;
+  subject.innerHTML = email.subject;
+  time.innerHTML = email.timestamp;
 
 
- 
+  mail.style.display = 'block';
+  mail.style.borderStyle = 'solid';
+  mail.style.borderColor = 'black';
+  mail.style.borderWidth = '2px';
+  mail.style.borderRadius = '5px';
 
+  const email_view = document.querySelector('#email-view');
 
-  
-
-
+  email_view.appendChild(mail);
+  mail.appendChild(sender);
+  mail.appendChild(subject);
+  mail.appendChild(body);
+  mail.append(time);
+}
 
 function send_mail(){
   const recipients = document.querySelector('#compose-recipients').value;
