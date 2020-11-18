@@ -38,11 +38,22 @@ function load_mailbox(mailbox) {
 
   fetch(`/emails/${mailbox}`)
   .then(response => response.json())
-  .then(result => {
-    console.log(result)
+  .then(data => {
+    console.log('EMAILS: ', data)
+    data.forEach(email => render_emails(email, mailbox))
   })
 }
 
+const render_emails = (email, mailbox) => {
+  const mail = document.createElement('div');
+  const sender = document.createElement('h5');
+  const subject = document.createElement('p');
+  const time = document.createElement('p');
+  const id = document.createElement('p');
+
+  console.log('here')
+  console.log('I')
+}
 
 function send_mail(){
   const recipients = document.querySelector('#compose-recipients').value;
@@ -60,6 +71,7 @@ function send_mail(){
   .then(response => response.json())
   .then(result => {
     console.log(result)
+    localStorage.clear()
     load_mailbox('sent');
   })
   return false
