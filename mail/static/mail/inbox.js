@@ -35,12 +35,14 @@ function load_mailbox(mailbox) {
   // Show the mailbox name
   document.querySelector('#emails-view').innerHTML = `<h3>${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}</h3>`;
 
-
+  // request to the mailbox that is passed in as arg
   fetch(`/emails/${mailbox}`)
   .then(response => response.json())
   .then(data => {
     data.forEach(email => {
       console.log('EMAIL:', email)
+
+      // create elements 
       const mail = document.createElement('div');
       const sender = document.createElement('h5');
       const subject = document.createElement('p');
@@ -48,13 +50,33 @@ function load_mailbox(mailbox) {
       const id = document.createElement('p');
 
       id.innerHTML = email.id;
-      sender.innerHTML = email.sender;
-      subject.innerHTML = email.subject;
+      sender.innerHTML = `From: ${email.sender}`;
+      subject.innerHTML = `Subject: ${email.subject}`;
       time.innerHTML = email.timestamp;
 
       mail.style.borderStyle = 'solid';
       mail.style.borderColor = 'black';
       mail.style.borderWidth = '2px';
+      mail.style.borderRadius = '5px';
+      mail.style.margin = '2rem';
+      if(email.read === true){
+        mail.style.backgroundColor = 'red'
+      }
+
+      mail.classList.add('container');
+      mail.classList.add('mail');
+
+      const email_view = document.querySelector('#emails-view');
+
+      email_view.appendChild(mail);
+      mail.appendChild(sender);
+      mail.appendChild(subject);
+      mail.append(time);
+
+      mail.addEventListener('click', () => {
+        console.log('clicking')
+      })
+      
     })
   })
 }
