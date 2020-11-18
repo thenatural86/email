@@ -39,21 +39,17 @@ function load_mailbox(mailbox) {
   fetch(`/emails/${mailbox}`)
   .then(response => response.json())
   .then(data => {
-    console.log('EMAILS: ', data)
-    data.forEach(email => render_emails(email, mailbox))
+    data.forEach(email => {
+      console.log('EMAIL:', email)
+      const mail = document.createElement('div');
+      const sender = document.createElement('h5');
+      const subject = document.createElement('p');
+      const time = document.createElement('p');
+      const id = document.createElement('p');
+    })
   })
 }
 
-const render_emails = (email, mailbox) => {
-  const mail = document.createElement('div');
-  const sender = document.createElement('h5');
-  const subject = document.createElement('p');
-  const time = document.createElement('p');
-  const id = document.createElement('p');
-
-  console.log('here')
-  console.log('I')
-}
 
 function send_mail(){
   const recipients = document.querySelector('#compose-recipients').value;
