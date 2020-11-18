@@ -39,11 +39,12 @@ function load_mailbox(mailbox) {
   fetch(`/emails/${mailbox}`)
   .then(response => response.json())
   .then(data => {
-    data.forEach(email => {
-      console.log('EMAIL:', email)
+    data.forEach(email => render_emails(email))
+  })
+}
 
-      // create elements 
-      const mail = document.createElement('div');
+const render_emails = (email) => {
+  const mail = document.createElement('div');
       const sender = document.createElement('h5');
       const subject = document.createElement('p');
       const time = document.createElement('p');
@@ -72,13 +73,14 @@ function load_mailbox(mailbox) {
       mail.appendChild(sender);
       mail.appendChild(subject);
       mail.append(time);
+      mail.addEventListener('click', () => load_email()) 
+}
 
-      mail.addEventListener('click', () => {
-        console.log('clicking')
-      })
-      
-    })
-  })
+const load_email = () => {
+  console.log('yolo')
+
+  document.querySelector('#emails-view').style.display = 'none';
+  // fetch(`/emails/${id}`)
 }
 
 
