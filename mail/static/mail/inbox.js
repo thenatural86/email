@@ -46,6 +46,15 @@ function load_mailbox(mailbox) {
       const subject = document.createElement('p');
       const time = document.createElement('p');
       const id = document.createElement('p');
+
+      id.innerHTML = email.id;
+      sender.innerHTML = email.sender;
+      subject.innerHTML = email.subject;
+      time.innerHTML = email.timestamp;
+
+      mail.style.borderStyle = 'solid';
+      mail.style.borderColor = 'black';
+      mail.style.borderWidth = '2px';
     })
   })
 }
