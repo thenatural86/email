@@ -61,18 +61,12 @@ const render_emails = (email, mailbox) => {
   subject.innerHTML = `Subject: ${email.subject}`;
   time.innerHTML = email.timestamp;
 
- 
-  
-  
- 
-
-  
-
   mail.style.borderStyle = 'solid';
   mail.style.borderColor = 'black';
   mail.style.borderWidth = '2px';
   mail.style.borderRadius = '5px';
   mail.style.margin = '2rem';
+
   if(email.read === true){
     mail.style.backgroundColor = 'lightgray'
   }
@@ -89,21 +83,49 @@ const render_emails = (email, mailbox) => {
   // archive.addEventListener('click', () => console.log('archiving'))
   // mail.addEventListener('click', () => load_email(email.id))
 
-
   if(mailbox === 'inbox'){
-    // console.log(mailbox);
     if(email.archived === false){
-      mail.appendChild(archive).addEventListener('click', () => console.log('Archiving'));
+      mail.appendChild(archive).addEventListener('click', () => archive_email(email));
       archive.innerHTML = 'Archive';
-      } 
-    else {
-      mail.appendChild(archive).addEventListener('click', () => console.log('Unarchiving'));
-      archive.innerHTML = 'Unarchive';
-    }
+    } 
   }
 
-
+  if(mailbox === 'archive'){
+    console.log('HERE I AM')
+    mail.appendChild(archive).addEventListener('click', () => archive_email(email));
+    archive.innerHTML = 'Unarchive';
+  }
+  // else if(mailbox === 'archived'){
+  //   console.log(mailbox)
+  //      
+  //     }
 }
+
+const archive_email = (email) => {
+  console.log('HERE I AM',email)
+  if(email.archived === false){
+    fetch(`/emails/${email.id}`, {
+      method: 'PUT',
+      body: JSON.stringify({
+        archived: true
+      })
+    })
+    .then(console.log(email.archived))
+    .then(load_mailbox('inbox'))
+  }
+  else if(email.archived === true){
+    console.log('unarchiving');
+    fetch(`/emails/${email.id}`, {
+      method: 'PUT',
+      body: JSON.stringify({
+        archived: false
+      })
+    })
+    .then(console.log(email.archived))
+    .then(load_mailbox('inbox'))
+  }
+}
+
 
 const load_email = (id) => {
   document.querySelector('#emails-view').style.display = 'none';
