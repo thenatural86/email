@@ -41,12 +41,12 @@ function load_mailbox(mailbox) {
   fetch(`/emails/${mailbox}`)
   .then(response => response.json())
   .then(data => {
-    data.forEach(email => render_emails(email))
+    data.forEach(email => render_emails(email, mailbox))
   })
 }
 
-const render_emails = (email) => {
-  console.log(email);
+const render_emails = (email, mailbox) => {
+  // console.log(email);
   document.querySelector('#email-view').style.display = 'none';
   document.querySelector('#compose-view').style.display = 'none';
   const mail = document.createElement('div');
@@ -61,11 +61,12 @@ const render_emails = (email) => {
   subject.innerHTML = `Subject: ${email.subject}`;
   time.innerHTML = email.timestamp;
 
-  if(email.archived === false){
-    archive.innerHTML = 'Archive';
-  } else {
-    archive.innerHTML = 'Unarchive';
-  }
+ 
+  
+  
+ 
+
+  
 
   mail.style.borderStyle = 'solid';
   mail.style.borderColor = 'black';
@@ -82,11 +83,26 @@ const render_emails = (email) => {
   const email_view = document.querySelector('#emails-view');
 
   email_view.appendChild(mail);
-  mail.appendChild(sender);
-  mail.appendChild(subject);
-  mail.appendChild(time);
-  mail.appendChild(archive);
-  mail.addEventListener('click', () => load_email(email.id)) 
+  mail.appendChild(sender).addEventListener('click', () => load_email(email.id));
+  mail.appendChild(subject).addEventListener('click', () => load_email(email.id));
+  mail.appendChild(time).addEventListener('click', () => load_email(email.id));
+  // archive.addEventListener('click', () => console.log('archiving'))
+  // mail.addEventListener('click', () => load_email(email.id))
+
+
+  if(mailbox === 'inbox'){
+    // console.log(mailbox);
+    if(email.archived === false){
+      mail.appendChild(archive).addEventListener('click', () => console.log('Archiving'));
+      archive.innerHTML = 'Archive';
+      } 
+    else {
+      mail.appendChild(archive).addEventListener('click', () => console.log('Unarchiving'));
+      archive.innerHTML = 'Unarchive';
+    }
+  }
+
+
 }
 
 const load_email = (id) => {
