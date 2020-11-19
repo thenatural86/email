@@ -32,6 +32,7 @@ function load_mailbox(mailbox) {
   document.querySelector('#emails-view').style.display = 'block';
   document.querySelector('#compose-view').style.display = 'none';
   document.querySelector('#email-view').style.display = 'none';
+  
 
   // Show the mailbox name
   document.querySelector('#emails-view').innerHTML = `<h3>${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}</h3>`;
@@ -45,6 +46,7 @@ function load_mailbox(mailbox) {
 }
 
 const render_emails = (email) => {
+  console.log(email);
   document.querySelector('#email-view').style.display = 'none';
   document.querySelector('#compose-view').style.display = 'none';
   const mail = document.createElement('div');
@@ -52,11 +54,18 @@ const render_emails = (email) => {
   const subject = document.createElement('p');
   const time = document.createElement('p');
   const id = document.createElement('p');
+  const archive = document.createElement('button');
 
   id.innerHTML = email.id;
   sender.innerHTML = `From: ${email.sender}`;
   subject.innerHTML = `Subject: ${email.subject}`;
   time.innerHTML = email.timestamp;
+
+  if(email.archived === false){
+    archive.innerHTML = 'Archive';
+  } else {
+    archive.innerHTML = 'Unarchive';
+  }
 
   mail.style.borderStyle = 'solid';
   mail.style.borderColor = 'black';
@@ -64,7 +73,7 @@ const render_emails = (email) => {
   mail.style.borderRadius = '5px';
   mail.style.margin = '2rem';
   if(email.read === true){
-    mail.style.backgroundColor = 'red'
+    mail.style.backgroundColor = 'lightgray'
   }
 
   mail.classList.add('container');
@@ -75,7 +84,8 @@ const render_emails = (email) => {
   email_view.appendChild(mail);
   mail.appendChild(sender);
   mail.appendChild(subject);
-  mail.append(time);
+  mail.appendChild(time);
+  mail.appendChild(archive);
   mail.addEventListener('click', () => load_email(email.id)) 
 }
 
@@ -99,15 +109,17 @@ const render_email = (email) => {
 
   const mail = document.createElement('div');
   const sender = document.createElement('h5');
+  const recipients = document.createElement('h5');
   const subject = document.createElement('p');
   const body = document.createElement('p');
   const time = document.createElement('p');
   const id = document.createElement('p');
   
   id.innerHTML = email.id;
-  sender.innerHTML = email.sender;
+  sender.innerHTML = `From: ${email.sender}`;
+  recipients.innerHTML= `To: ${email.recipients[0]}`;
+  subject.innerHTML = `Subject: ${email.subject}`;
   body.innerHTML = email.body;
-  subject.innerHTML = email.subject;
   time.innerHTML = email.timestamp;
 
 
@@ -121,9 +133,16 @@ const render_email = (email) => {
 
   email_view.appendChild(mail);
   mail.appendChild(sender);
+  mail.appendChild(recipients);
   mail.appendChild(subject);
   mail.appendChild(body);
   mail.append(time);
+  fetch(`/emails/${email.id}`, {
+    method: 'PUT',
+    body:JSON.stringify({
+      read: true
+    })
+  })
 }
 
 function send_mail(){
