@@ -80,6 +80,8 @@ const render_emails = (email, mailbox) => {
   mail.appendChild(subject).addEventListener('click', () => load_email(email.id));
   mail.appendChild(time).addEventListener('click', () => load_email(email.id));
 
+
+
   if(mailbox === 'inbox'){
     if(email.archived === false){
       mail.appendChild(archive).addEventListener('click', () => archive_email(email));
