@@ -72,7 +72,7 @@ const render_emails = (email, mailbox) => {
 
   mail.classList.add('container');
   mail.classList.add('mail');
-
+  // change
   const email_view = document.querySelector('#emails-view');
 
   email_view.appendChild(mail);
